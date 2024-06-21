@@ -1,4 +1,5 @@
-from src.db.models import reader
+from typing import Optional
+from src.db.models.reader import Reader
 
 class MenuDisplay:
 
@@ -28,6 +29,21 @@ class MenuDisplay:
         )
 
 
+class DataInput():
+
+    @staticmethod
+    def input_for_reader_insert() -> dict[str, str]:
+        username = input('Enter your username: ')
+        title = input('Enter title(Mr, Ms, Dr): ')
+        first_name = input('Enter first name: ')
+        last_name = input('Enter last name: ')
+
+        return {
+            "username": username,
+            "title": title,
+            "first_name": first_name,
+            "last_name": last_name
+        }
 
 def main():
     while True:
@@ -42,7 +58,14 @@ def main():
 
                 if option == 1:
                     # TODO: INSERT READER
-                    pass
+                    reader_detail: dict[str, str] = DataInput.input_for_reader_insert()
+                    reader: Optional[Reader] = Reader.insert_data(**reader_detail)
+
+                    if reader:
+                        print(f'Reader with username: {reader.username} inserted successfully')
+                    else:
+                        print('Insertion failed')
+                        
                 elif option == 2:
                     # TODO: INSERT BOOK
                     pass
